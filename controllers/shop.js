@@ -21,7 +21,7 @@ const getProducts = (req, res, next) => {
 };
 exports.getProducts = getProducts;
 const getProduct = (req, res, next) => {
-    const prodId = req.params.productId;
+    const prodId = req.params.id;
     product_1.default.findById(prodId)
         .then((product) => {
         if (product === null)

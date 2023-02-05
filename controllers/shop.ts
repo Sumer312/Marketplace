@@ -18,7 +18,7 @@ const getProducts = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getProduct = (req: Request, res: Response, next: NextFunction): void => {
-  const prodId = req.params.productId;
+  const prodId = req.params.id;
   Product.findById(prodId)
     .then((product) => {
       if (product === null) return;

@@ -30,7 +30,7 @@ router.get("/checkout", getCheckout);
 
 router.post("/deleteCart", postDeleteCartEle);
 
-router.post('/create-order', postOrders);
+router.post('/createOrder', postOrders);
 
 
 export default router;
