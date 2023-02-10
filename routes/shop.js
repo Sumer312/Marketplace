@@ -14,5 +14,5 @@ router.get("/cart", shop_1.getCart);
 router.get("/orders", shop_1.getOrders);
 router.get("/checkout", shop_1.getCheckout);
 router.post("/deleteCart", shop_1.postDeleteCartEle);
-router.post('/create-order', shop_1.postOrders);
+router.post('/createOrder', shop_1.postOrders);
 exports.default = router;

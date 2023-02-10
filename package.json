@@ -3,7 +3,9 @@
     "start": "nodemon app.js"
   },
   "devDependencies": {
+    "@types/connect-mongodb-session": "^2.4.4",
     "@types/express": "^4.17.15",
+    "@types/express-session": "^1.17.5",
     "@types/node": "^18.11.18",
     "mongoose": "^6.9.0",
     "nodemon": "^2.0.20",
@@ -14,7 +16,9 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "connect-mongodb-session": "^3.1.1",
     "ejs": "^3.1.8",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "express-session": "^1.17.3"
   }
 }
