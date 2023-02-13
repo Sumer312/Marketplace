@@ -12,6 +12,19 @@ import shopRoutes from "./routes/shop";
 import authRoutes from "./routes/auth";
 import { userType } from "./customTypes";
 
+declare module "express-serve-static-core" {
+  interface Request {
+    user: HydratedDocument<userType>;
+  }
+}
+
+declare module "express-session" {
+  interface SessionData {
+    isLoggedIn: boolean;
+    user: HydratedDocument<userType>;
+  }
+}
+
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -27,19 +40,6 @@ const store = new MongoDBStore({
 
 app.set("view engine", "ejs");
 app.set("views", "views");
-
-declare module "express-serve-static-core" {
-  interface Request {
-    user: HydratedDocument<userType>;
-  }
-}
-
-declare module "express-session" {
-  interface SessionData {
-    isLoggedIn: boolean;
-    user: HydratedDocument<userType>;
-  }
-}
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -73,18 +73,18 @@ app.use(get404);
 mongoose
   .connect(MONGO_URI)
   .then(() => {
-    User.findOne().then((user) => {
-      if (!user) {
-        const user = new User({
-          name: "Max",
-          email: "max@test.com",
-          cart: {
-            items: [],
-          },
-        });
-        user.save();
-      }
-    });
+    // User.findOne().then((user) => {
+    //   if (!user) {
+    //     const user = new User({
+    //       name: "Max",
+    //       email: "max@test.com",
+    //       cart: {
+    //         items: [],
+    //       },
+    //     });
+    //     user.save();
+    //   }
+    // });
     app.listen(PORT, () => console.log(`Server running on ${PORT}`));
   })
   .catch((err) => {

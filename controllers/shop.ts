@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { productType } from "../customTypes";
+import { productType, userType } from "../customTypes";
 import Order from "../models/orders";
 import Product from "../models/product";
 
@@ -49,7 +49,7 @@ const getIndex = (req: Request, res: Response, next: NextFunction): void => {
 };
 
 const getCart = (req: Request, res: Response, next: NextFunction): void => {
-  req.user.populate("cart.items.productId").then((user) => {
+  req.user.populate("cart.items.productId").then((user : userType) => {
     const products = user.cart.items;
     res.render("shop/cart", {
       path: "/cart",
@@ -97,7 +97,7 @@ const getOrders = (req: Request, res: Response, next: NextFunction): void => {
 const postOrders = (req: Request, res: Response, next: NextFunction): void => {
   req.user
     .populate("cart.items.productId")
-    .then((user) => {
+    .then((user : userType) => {
       const products = user.cart.items.map((i) => {
         return { quantity: i.quantity, product: { ...i.productId } };
       });
@@ -120,7 +120,7 @@ const postOrders = (req: Request, res: Response, next: NextFunction): void => {
       return req.user.clearCart();
     })
     .then(() => res.redirect("/orders"))
-    .catch((err) => console.log(err));
+    .catch((err : Error) => console.log(err));
 };
 
 const getCheckout = (req: Request, res: Response, next: NextFunction): void => {

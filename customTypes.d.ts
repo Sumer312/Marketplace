@@ -16,25 +16,26 @@ interface cartType extends Document {
 interface userType extends Document {
   name: string;
   email: string;
+  password: string;
   cart: {
     items: Array<cartType>;
   };
-  addToCart(product : productType): void;
-  removeFromCart(productId : Schema.Types.ObjectId): void;
+  addToCart(product: productType): void;
+  removeFromCart(productId: Schema.Types.ObjectId): void;
   clearCart(): void;
 }
 
 interface ordersType extends Document {
   products: [
     {
-      product: object,
-      quantity: number,
-    },
-  ],
+      product: object;
+      quantity: number;
+    }
+  ];
   user: {
-    name: string,
-    userId: Schema.Types.ObjectId,
-  },
+    name: string;
+    userId: Schema.Types.ObjectId;
+  };
 }
 
 export { productType, userType, cartType, ordersType };
