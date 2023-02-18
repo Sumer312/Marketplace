@@ -38,4 +38,17 @@ interface ordersType extends Document {
   };
 }
 
+declare module "express-serve-static-core" {
+  interface Request {
+    user: HydratedDocument<userType>;
+  }
+}
+
+declare module "express-session" {
+  interface SessionData {
+    isLoggedIn: boolean;
+    user: HydratedDocument<userType>;
+  }
+}
+
 export { productType, userType, cartType, ordersType };

@@ -1,4 +1,5 @@
 import express from "express";
+import isAuth from "../middleware/isAuth";
 
 import {
   getCart,
@@ -14,23 +15,23 @@ import {
 
 const router = express.Router();
 
-router.get("/", getIndex);
+router.get("/", isAuth, getIndex);
 
-router.get("/products", getProducts);
+router.get("/products", isAuth, getProducts);
 
-router.get("/product/:id", getProduct);
+router.get("/product/:id", isAuth, getProduct);
 
-router.post("/cart", postCart);
+router.post("/cart", isAuth, postCart);
 
-router.get("/cart", getCart);
+router.get("/cart", isAuth, getCart);
 
-router.get("/orders", getOrders);
+router.get("/orders", isAuth, getOrders);
 
-router.get("/checkout", getCheckout);
+router.get("/checkout", isAuth, getCheckout);
 
-router.post("/deleteCart", postDeleteCartEle);
+router.post("/deleteCart", isAuth, postDeleteCartEle);
 
-router.post('/createOrder', postOrders);
+router.post('/createOrder', isAuth, postOrders);
 
 
 export default router;

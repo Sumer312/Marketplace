@@ -11,19 +11,9 @@ import adminRoutes from "./routes/admin";
 import shopRoutes from "./routes/shop";
 import authRoutes from "./routes/auth";
 import { userType } from "./customTypes";
-
-declare module "express-serve-static-core" {
-  interface Request {
-    user: HydratedDocument<userType>;
-  }
-}
-
-declare module "express-session" {
-  interface SessionData {
-    isLoggedIn: boolean;
-    user: HydratedDocument<userType>;
-  }
-}
+import flash from "connect-flash";
+import cookieParser from "cookie-parser";
+import { doubleCsrf } from "csrf-csrf";
 
 const PORT = process.env.PORT || 3000;
 
@@ -38,11 +28,13 @@ const store = new MongoDBStore({
   collection: "sessions",
 });
 
+
 app.set("view engine", "ejs");
 app.set("views", "views");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(flash());
 app.use(
   session({
     secret: "my secret",
@@ -67,6 +59,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
+
 
 app.use(get404);
 
