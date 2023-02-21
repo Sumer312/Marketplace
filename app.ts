@@ -1,19 +1,17 @@
 import path from "path";
 
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response, NextFunction, Express } from "express";
 import mongoose, { HydratedDocument } from "mongoose";
 import get404 from "./controllers/error";
 import User from "./models/user";
 import session from "express-session";
 import { default as connectMongoDBSession } from "connect-mongodb-session";
-
 import adminRoutes from "./routes/admin";
 import shopRoutes from "./routes/shop";
 import authRoutes from "./routes/auth";
-import { userType } from "./customTypes";
+import { DestinationCallback, FileNameCallback } from "./customTypes";
 import flash from "connect-flash";
-import cookieParser from "cookie-parser";
-import { doubleCsrf } from "csrf-csrf";
+import multer, { FileFilterCallback } from "multer";
 
 const PORT = process.env.PORT || 3000;
 
@@ -28,12 +26,43 @@ const store = new MongoDBStore({
   collection: "sessions",
 });
 
+const storage: multer.StorageEngine = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./images/");
+  },
+  filename: (
+    req: Request,
+    file: Express.Multer.File,
+    cb: FileNameCallback
+  ): void => {
+    const date: string = new Date().toISOString();
+    cb(null, date.replace(/:/g , "-") + file.originalname.toString());
+  },
+});
+
+const fileFilter = (
+  req: Request,
+  file: Express.Multer.File,
+  cb: FileFilterCallback
+): void => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
 
 app.set("view engine", "ejs");
 app.set("views", "views");
 
 app.use(express.urlencoded({ extended: true }));
+app.use(multer({ storage: storage, fileFilter: fileFilter }).single("image"));
 app.use(express.static(path.join(__dirname, "public")));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(flash());
 app.use(
   session({
@@ -59,7 +88,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
-
 
 app.use(get404);
 

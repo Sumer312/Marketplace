@@ -1,4 +1,5 @@
 import { Schema, Document, Model } from "mongoose";
+import multer from "multer";
 
 interface productType extends Document {
   title: string;
@@ -51,4 +52,14 @@ declare module "express-session" {
   }
 }
 
-export { productType, userType, cartType, ordersType };
+type DestinationCallback = (error: Error | null, destination: string) => void;
+type FileNameCallback = (error: Error | null, filename: string) => void;
+
+export {
+  productType,
+  userType,
+  cartType,
+  ordersType,
+  DestinationCallback,
+  FileNameCallback,
+};
